@@ -1,45 +1,50 @@
 <?php
 
 /**
+ * @file
+ * This module handles install methods.
+ */
+
+/**
  * Implements hook_schema().
  */
 function bluecadet_public_files_schema() {
-  $schema['bluecadet_public_files'] = array(
+  $schema['bluecadet_public_files'] = [
     'description' => 'Table that contains logs of files in the directory.',
-    'fields' => array(
-      'pfrid' => array(
+    'fields' => [
+      'pfrid' => [
         'type' => 'serial',
         'not null' => TRUE,
         'description' => 'Primary Key: Unique event ID.',
-      ),
-      'uri' => array(
+      ],
+      'uri' => [
         'type' => 'text',
         'not null' => TRUE,
         'size' => 'big',
         'description' => 'Text of uri.',
-      ),
-      'filename' => array(
+      ],
+      'filename' => [
         'type' => 'text',
         'not null' => TRUE,
         'size' => 'big',
         'description' => 'Text of filename.',
-      ),
-      'filesize' => array(
+      ],
+      'filesize' => [
         'type' => 'int',
         'not null' => TRUE,
         'default' => 0,
         'description' => 'Text of filename.',
-      ),
-      'timestamp' => array(
+      ],
+      'timestamp' => [
         'type' => 'int',
         'not null' => TRUE,
         'default' => 0,
         'description' => 'Unix timestamp of when event occurred.',
-      ),
-    ),
-    'primary key' => array('pfrid'),
-    'indexes' => array(),
-  );
+      ],
+    ],
+    'primary key' => ['pfrid'],
+    'indexes' => [],
+  ];
 
   return $schema;
 }

@@ -2,13 +2,23 @@
 
 namespace Drupal\bluecadet_public_files\Form;
 
+use Drupal\bluecadet_public_files\DatabaseTrait;
+use Drupal\bluecadet_public_files\QueueTrait;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\FormBase;
+use Drupal\Core\Logger\LoggerChannelTrait;
+use Drupal\Core\Messenger\MessengerTrait;
 
 /**
- *
+ * Form to reset Public Files data.
  */
 class ResetPublicFiles extends FormBase {
+
+  use LoggerChannelTrait;
+  use MessengerTrait;
+  use DatabaseTrait;
+  use QueueTrait;
+
   /**
    * {@inheritdoc}
    */
@@ -20,14 +30,16 @@ class ResetPublicFiles extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form['actions'] = array('#type' => 'actions');
-    $form['actions']['reset'] = array(
+    $form['actions'] = ['#type' => 'actions'];
+    $form['actions']['reset'] = [
       '#type' => 'submit',
       '#value' => $this->t('Reset Data'),
-    );
+    ];
 
     return $form;
   }
+
+  // phpcs:disable
 
   /**
    * {@inheritdoc}
@@ -36,16 +48,17 @@ class ResetPublicFiles extends FormBase {
     parent::validateForm($form, $form_state);
   }
 
+  // phpcs:enable
+
   /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $db = \Drupal::database();
 
     // Delete it all.
-    $db->delete('bluecadet_public_files', [])->execute();
+    $this->getDatabase()->delete('bluecadet_public_files', [])->execute();
 
-    $queue_factory = \Drupal::service('queue');
+    $queue_factory = $this->getQueueFactory();
     $dir_queue = $queue_factory->get('scan_public_files_dir');
 
     // Queue Public Directory.
@@ -53,6 +66,8 @@ class ResetPublicFiles extends FormBase {
     $item->dir = 'public://';
     $dir_queue->createItem($item);
 
-    drupal_set_message('You have reset the data.');
+    // Send message.
+    $this->messenger()->addMessage('You have reset the data.');
   }
+
 }

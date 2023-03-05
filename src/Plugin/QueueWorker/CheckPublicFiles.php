@@ -2,9 +2,9 @@
 
 namespace Drupal\bluecadet_public_files\Plugin\QueueWorker;
 
-use Drupal\Core\Entity\EntityStorageInterface;
-use Drupal\Core\Queue\QueueFactory;
-use Drupal\Core\Queue\QueueInterface;
+use Drupal\Core\Database\Connection;
+use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Queue\QueueWorkerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -17,46 +17,71 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   cron = {"time" = 15}
  * )
  */
-class CheckPublicFiles extends QueueWorkerBase {
+class CheckPublicFiles extends QueueWorkerBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * Database Connection.
+   *
+   * @var Drupal\Core\Database\Connection
+   */
+  private $database;
+
+  /**
+   * The file system.
+   *
+   * @var \Drupal\Core\File\FileSystemInterface
+   */
+  protected $fileSystem;
 
   /**
    * {@inheritdoc}
-   *
-   * TODO: change this to use symphony/finder
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, Connection $database, FileSystemInterface $file_system) {
+    $this->configuration = $configuration;
+    $this->pluginId = $plugin_id;
+    $this->pluginDefinition = $plugin_definition;
+    $this->database = $database;
+    $this->fileSystem = $file_system;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+          $configuration,
+          $plugin_id,
+          $plugin_definition,
+          $container->get('database'),
+          $container->get('file_system')
+      );
+  }
+
+  /**
+   * {@inheritdoc}
    */
   public function processItem($data) {
     $uri = $data->uri;
     $filename = $data->filename;
 
-    // $q = db_select('file_managed', 'fm');
-    // $q->fields('fm', array('fid'));
-    // $q->condition('uri', $uri);
-    // $r = $q->execute()->fetchAssoc();
-
-    $db = \Drupal\Core\Database\Database::getConnection();
-    $query = $db->select('file_managed', 'f');
+    $query = $this->database->select('file_managed', 'f');
     $query->fields('f', ['fid']);
     $query->condition('uri', $uri);
     $r = $query->execute()->fetchAll();
 
     if (empty($r)) {
       // Create DB log.
-      // $record = array(
-      //   'uri' => $uri,
-      //   'filename' => $filename,
-      //   'filesize' => filesize(drupal_realpath($uri)),
-      //   'timestamp' => time(),
-      // );
-      // drupal_write_record('nasm_files_report', $record);
-
-      \Drupal::database()->merge('bluecadet_public_files')
+      $this->database->merge('bluecadet_public_files')
         ->key(['uri' => $uri])
-        ->fields([
-            'filename' => $filename,
-            'filesize' => filesize(drupal_realpath($uri)),
-            'timestamp' => time(),
-          ])
+        ->fields(
+                [
+                  'filename' => $filename,
+                  'filesize' => filesize($this->fileSystem->realpath($uri)),
+                  'timestamp' => time(),
+                ]
+            )
         ->execute();
     }
   }
+
 }
