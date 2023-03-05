@@ -1,0 +1,45 @@
+<?php
+
+/**
+ * Implements hook_schema().
+ */
+function bluecadet_public_files_schema() {
+  $schema['bluecadet_public_files'] = array(
+    'description' => 'Table that contains logs of files in the directory.',
+    'fields' => array(
+      'pfrid' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique event ID.',
+      ),
+      'uri' => array(
+        'type' => 'text',
+        'not null' => TRUE,
+        'size' => 'big',
+        'description' => 'Text of uri.',
+      ),
+      'filename' => array(
+        'type' => 'text',
+        'not null' => TRUE,
+        'size' => 'big',
+        'description' => 'Text of filename.',
+      ),
+      'filesize' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Text of filename.',
+      ),
+      'timestamp' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Unix timestamp of when event occurred.',
+      ),
+    ),
+    'primary key' => array('pfrid'),
+    'indexes' => array(),
+  );
+
+  return $schema;
+}

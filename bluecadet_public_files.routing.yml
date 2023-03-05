@@ -1,0 +1,7 @@
+bluecadet_public_files.view_report:
+  path: '/admin/config/media/public-files-report'
+  defaults:
+    _controller: '\Drupal\bluecadet_public_files\Controller\PublicFilesReport::viewReport'
+    _title: 'Public Files Report'
+  requirements:
+    _permission: 'access administration pages'
