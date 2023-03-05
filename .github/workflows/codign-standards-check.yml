@@ -13,6 +13,13 @@ jobs:
       matrix:
         drupal-core: ['9.4.x', '10.0.x']
         php-versions: ['7.4', '8.0', '8.1', '8.2']
+        exclude:
+          -
+            drupal-core: '10.0.x'
+            php-versions: '7.4'
+          -
+            drupal-core: '10.0.x'
+            php-versions: '8.0'
     steps:
       - name: Checkout Drupal core
         uses: actions/checkout@v2
