@@ -4,8 +4,6 @@ namespace Drupal\Tests\bluecadet_public_files\Functional;
 
 use Drupal\Core\Url;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\system\Entity\Menu;
-use Drupal\system\MenuStorage;
 use Drupal\Tests\BrowserTestBase;
 
 /**
@@ -24,7 +22,7 @@ class PublicFilesTest extends BrowserTestBase {
    */
   protected static $modules = [
     'node',
-    'bluecadet_public_files'
+    'bluecadet_public_files',
   ];
 
   /**

@@ -72,11 +72,9 @@ class PublicFilesReport extends ControllerBase {
     $query = $db->select('bluecadet_public_files', 'pf');
     $query->fields('pf');
     // The actual action of sorting the rows is here.
-    $table_sort = $query->extend('Drupal\Core\Database\Query\TableSortExtender')
-      ->orderByHeader($header);
+    $table_sort = $query->extend('Drupal\Core\Database\Query\TableSortExtender')->orderByHeader($header);
     // Limit the rows to 20 for each page.
-    $pager = $table_sort->extend('Drupal\Core\Database\Query\PagerSelectExtender')
-      ->limit(20);
+    $pager = $table_sort->extend('Drupal\Core\Database\Query\PagerSelectExtender')->limit(20);
     $result = $pager->execute();
 
     $rows = [];

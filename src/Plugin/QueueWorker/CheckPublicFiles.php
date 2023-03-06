@@ -22,7 +22,7 @@ class CheckPublicFiles extends QueueWorkerBase implements ContainerFactoryPlugin
   /**
    * Database Connection.
    *
-   * @var Drupal\Core\Database\Connection
+   * @var \Drupal\Core\Database\Connection
    */
   private $database;
 
