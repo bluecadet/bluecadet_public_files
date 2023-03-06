@@ -10,14 +10,14 @@ trait DatabaseTrait {
   /**
    * Database Connection.
    *
-   * @var Drupal\Core\Database\Connection
+   * @var \Drupal\Core\Database\Connection
    */
   private $database;
 
   /**
    * Gets the Database Service.
    *
-   * @return Drupal\Core\Database\Connection
+   * @return \Drupal\Core\Database\Connection
    *   The Database connection.
    */
   protected function getDatabase() {
