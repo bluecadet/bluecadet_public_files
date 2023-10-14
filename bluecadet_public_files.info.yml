@@ -1,7 +1,11 @@
-type: module
 name: Bluecadet Public Files Manager
+type: module
 description: "Aides in understanding what's in your public files folders."
-package: Bluecadet
 core_version_requirement: ^9 || ^10
+
+package: Bluecadet
+
+dependencies: []
+
 configure: bluecadet_public_files.view_report
-version: '2.0.0-rc1'
+
