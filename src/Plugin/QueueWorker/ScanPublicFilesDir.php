@@ -68,6 +68,8 @@ class ScanPublicFilesDir extends QueueWorkerBase implements ContainerFactoryPlug
 
     $override_directories = [
       'public://styles',
+      'public://js',
+      'public://css',
       'public://ctools',
       'public://private',
     ];
