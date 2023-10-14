@@ -1,0 +1,29 @@
+{
+  "name": "bluecadet_public_files",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\"",
+    "build": "npx bldr build",
+    "clean": "rm -rfv ./assets/dist/* && rm -rfv ./modules/**/assets/dist/*",
+    "watch": "npx bldr watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bluecadet/bluecadet_public_files.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bluecadet/bluecadet_public_files/issues"
+  },
+  "homepage": "https://github.com/bluecadet/bluecadet_public_files#readme",
+  "dependencies": {
+    "@bluecadet/drops": "1.0.0-alpha.5"
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0",
+    "postcss-pxtorem": "^6.0.0"
+  }
+}
