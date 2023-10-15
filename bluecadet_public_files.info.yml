@@ -12,6 +12,6 @@ configure: bluecadet_public_files.view_report
 
 
 # Information added by packaging script on 2023-10-14
-version: 2.0.0-rc2
+version: 2.0.0-rc3
 project: bluecadet_public_files
-datestamp: 1697327947974
+datestamp: 1697328123603
