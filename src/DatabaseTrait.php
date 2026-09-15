@@ -12,7 +12,7 @@ trait DatabaseTrait {
    *
    * @var \Drupal\Core\Database\Connection
    */
-  private $database;
+  protected $database;
 
   /**
    * Gets the Database Service.
