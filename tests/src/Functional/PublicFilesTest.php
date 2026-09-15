@@ -7,9 +7,9 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Tests\BrowserTestBase;
 
 /**
- * Test the Member Discounts api.
+ * Test the Bluecadet Public Files report page.
  *
- * @group amon_carter
+ * @group bluecadet_public_files
  */
 class PublicFilesTest extends BrowserTestBase {
 

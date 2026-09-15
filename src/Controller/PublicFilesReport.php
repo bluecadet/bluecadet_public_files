@@ -38,6 +38,10 @@ class PublicFilesReport extends ControllerBase {
     $query = $db->select('bluecadet_public_files', 'pf');
     $query->addExpression('SUM(filesize)', 'totalFileSize');
     $r = $query->execute()->fetch();
+    // fetch() defaults to object mode; $r is only falsy if the query itself
+    // failed.
+    // @phpstan-ignore-next-line
+    $total_file_size = $r ? $r->totalFileSize : 0;
 
     $db = $this->getDatabase();
     $query = $db->select('bluecadet_public_files', 'pf');
@@ -51,7 +55,7 @@ class PublicFilesReport extends ControllerBase {
         '#markup' => '<br />Num of Files in queue: ' . number_format($file_queue->numberOfItems()) . '',
       ],
       [
-        '#markup' => '<br />Total Filesize of unused files: ' . $this->formatBytes($r->totalFileSize),
+        '#markup' => '<br />Total Filesize of unused files: ' . $this->formatBytes($total_file_size),
       ],
       [
         '#markup' => '<br />Total number of files: ' . number_format($num_rows) . '<br /><br />',
@@ -71,7 +75,10 @@ class PublicFilesReport extends ControllerBase {
     $db = $this->getDatabase();
     $query = $db->select('bluecadet_public_files', 'pf');
     $query->fields('pf');
-    // The actual action of sorting the rows is here.
+    // The actual action of sorting the rows is here. ::extend()'s return
+    // type can't be statically resolved to the concrete extender class
+    // requested.
+    // @phpstan-ignore-next-line
     $table_sort = $query->extend('Drupal\Core\Database\Query\TableSortExtender')->orderByHeader($header);
     // Limit the rows to 20 for each page.
     $pager = $table_sort->extend('Drupal\Core\Database\Query\PagerSelectExtender')->limit(20);

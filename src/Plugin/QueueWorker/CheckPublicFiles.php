@@ -24,7 +24,7 @@ class CheckPublicFiles extends QueueWorkerBase implements ContainerFactoryPlugin
    *
    * @var \Drupal\Core\Database\Connection
    */
-  private $database;
+  protected $database;
 
   /**
    * The file system.
